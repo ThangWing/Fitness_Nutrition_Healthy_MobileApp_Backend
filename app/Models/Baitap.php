@@ -17,9 +17,4 @@ class BaiTap extends Model
         return $this->belongsToMany(BuoiTap::class, 'ctbuoitap', 'baitap_id', 'buoitapid')
                     ->withPivot('duration');
     }
-
-    public function getImageUrlAttribute($value)
-    {
-        return "http://10.0.2.2:8000" . $value;
-    }
 }

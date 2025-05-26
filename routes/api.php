@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BaiTapController;
+use App\Http\Controllers\BuoitapController;
 use App\Http\Controllers\CTBuoiTapController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DoanController;
