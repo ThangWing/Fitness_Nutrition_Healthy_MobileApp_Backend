@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\BaiTapController;
-use App\Http\Controllers\Api\CTBuoiTapController;
-use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BaiTapController;
+use App\Http\Controllers\CTBuoiTapController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DoanController;
 use App\Http\Controllers\DinhDuongController;
 use App\Http\Controllers\DinhDuongDoanController;
