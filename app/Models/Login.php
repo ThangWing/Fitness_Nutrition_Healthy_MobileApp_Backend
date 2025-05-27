@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Login extends Model
 {
     protected $table = 'login';
-    protected $fillable = ['username', 'password', 'user_id'];
+    protected $fillable = ['username', 'password'];
 
     public function user()
     {

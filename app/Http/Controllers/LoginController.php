@@ -16,36 +16,22 @@ class LoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|unique:login',
-            'password' => 'required|min:6',
-            'name' => 'required',
-            'age' => 'required|integer|min:0',
-            'gender' => 'required',
-            'email' => 'required|email|unique:users'
+            'password' => 'required|min:6'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // Tạo user mới
-        $user = User::create([
-            'name' => $request->name,
-            'age' => $request->age,
-            'gender' => $request->gender,
-            'email' => $request->email
-        ]);
-
-        // Tạo login
         $login = Login::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'user_id' => $user->id
+            'user_id' => null // chưa có user
         ]);
 
         return response()->json([
-            'message' => 'Đăng ký thành công',
-            'login' => $login,
-            'user' => $user
+            'message' => 'Tạo tài khoản thành công',
+            'login' => $login
         ], 201);
     }
 
@@ -68,5 +54,90 @@ class LoginController extends Controller
             'message' => 'Đăng nhập thành công',
             'user' => $login->user
         ]);
+    }
+
+    public function sendOtp(Request $request)
+    {
+        $request->validate(['username' => 'required']);
+
+        $login = Login::where('username', $request->username)->first();
+        if (!$login || !$login->user || !$login->user->email) {
+            return response()->json(['error' => 'Không tìm thấy tài khoản hoặc email'], 404);
+        }
+
+        $otp = rand(100000, 999999);
+
+        // Xóa mã OTP cũ nếu có
+        DB::table('password_resets')->where('username', $request->username)->delete();
+
+        // Lưu mã mới
+        DB::table('password_resets')->insert([
+            'username' => $request->username,
+            'otp' => $otp,
+            'created_at' => now()
+        ]);
+
+        // Gửi email
+        Mail::to($login->user->email)->send(new ResetOtpMail($otp, $request->username));
+
+        return response()->json(['message' => 'Đã gửi mã OTP qua email']);
+    }
+
+    public function verifyOtpAndReset(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'otp' => 'required',
+            'new_password' => 'required|min:6'
+        ]);
+
+        $otpRecord = DB::table('password_resets')
+            ->where('username', $request->username)
+            ->where('otp', $request->otp)
+            ->first();
+
+        if (!$otpRecord) {
+            return response()->json(['error' => 'Mã OTP không đúng'], 400);
+        }
+
+        if (Carbon::parse($otpRecord->created_at)->addMinutes(10)->isPast()) {
+            return response()->json(['error' => 'Mã OTP đã hết hạn'], 410);
+        }
+
+        $login = Login::where('username', $request->username)->first();
+        $login->password = Hash::make($request->new_password);
+        $login->save();
+
+        // Xóa OTP sau khi dùng
+        DB::table('password_resets')->where('username', $request->username)->delete();
+
+        return response()->json(['message' => 'Đặt lại mật khẩu thành công']);
+    }
+
+    public function changePasswordByUserId(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|different:old_password',
+        ]);
+
+        // Tìm đối tượng login bằng user_id
+        $login = Login::where('user_id', $request->user_id)->first();
+
+        if (!$login) {
+            return response()->json(['error' => 'Không tìm thấy tài khoản cho user_id đã cho'], 404);
+        }
+
+        // Kiểm tra mật khẩu cũ
+        if (!Hash::check($request->old_password, $login->password)) {
+            return response()->json(['error' => 'Mật khẩu cũ không đúng'], 401);
+        }
+
+        // Cập nhật mật khẩu mới
+        $login->password = Hash::make($request->new_password);
+        $login->save();
+
+        return response()->json(['message' => 'Đổi mật khẩu thành công']);
     }
 }

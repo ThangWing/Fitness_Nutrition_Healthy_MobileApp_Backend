@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     protected $table = 'users';
 
-    protected $fillable = ['name', 'age', 'gender', 'email'];
+    protected $fillable = ['name', 'age', 'gender', 'email','login_id'];
 
     public function buoiTaps() {
         return $this->hasMany(Buoitap::class);

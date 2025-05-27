@@ -51,3 +51,7 @@ Route::apiResource('dinhduong-doan', DinhDuongDoanController::class);
 Route::apiResource('dailychiso', DailyChisoController::class);
 
 Route::apiResource('muctieu', MucTieuController::class);
+
+Route::post('/send-otp', [LoginController::class, 'sendOtp']);
+Route::post('/verify-otp-reset', [LoginController::class, 'verifyOtpAndReset']);
+Route::post('/change-password', [LoginController::class, 'changePassword']);

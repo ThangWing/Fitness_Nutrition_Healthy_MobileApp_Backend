@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('gender');
             $table->string('email')->unique();
             $table->timestamps();
+            $table->unsignedBigInteger('login_id');
+
+            $table->foreign('login_id')->references('id')->on('login')->onDelete('cascade');
         });
     }        
     /**
