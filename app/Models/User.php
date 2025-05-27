@@ -29,7 +29,8 @@ class User extends Authenticatable
         return $this->hasMany(Daily_chiso::class);
     }
 
-    public function login() {
-        return $this->hasOne(Login::class);
+    public function login()
+    {
+        return $this->belongsTo(Login::class, 'login_id');
     }
 }

@@ -54,4 +54,4 @@ Route::apiResource('muctieu', MucTieuController::class);
 
 Route::post('/send-otp', [LoginController::class, 'sendOtp']);
 Route::post('/verify-otp-reset', [LoginController::class, 'verifyOtpAndReset']);
-Route::post('/change-password', [LoginController::class, 'changePassword']);
+Route::post('/change-password', [LoginController::class, 'changePasswordByUserId']);

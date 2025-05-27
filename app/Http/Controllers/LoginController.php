@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Login;
 use App\Models\User;
+use App\Mail\ResetOtpMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
 
 class LoginController extends Controller
 {
@@ -122,8 +127,8 @@ class LoginController extends Controller
             'new_password' => 'required|min:6|different:old_password',
         ]);
 
-        // Tìm đối tượng login bằng user_id
-        $login = Login::where('user_id', $request->user_id)->first();
+        $user = User::findOrFail($request->user_id);
+        $login = $user->login;
 
         if (!$login) {
             return response()->json(['error' => 'Không tìm thấy tài khoản cho user_id đã cho'], 404);
