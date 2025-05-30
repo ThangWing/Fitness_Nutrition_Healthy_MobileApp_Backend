@@ -55,7 +55,7 @@ class BuoitapController extends Controller
         $totalCalories += $calories;
     }
 
-    $buoiTap = \App\Models\BuoiTap::create([
+    $buoiTap = BuoiTap::create([
         'user_id' => $request->user_id,
         'calories_burned' => round($totalCalories, 2),
         'date' => $request->date,

@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create('buoitap', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger ('user_id');
-            $table->decimal('calories_burned', 8, 2);
+            $table->decimal('calories_burned', 8, 2)->nullable();
             $table->date('date');
             $table->timestamps();
 
