@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dinhduong', function (Blueprint $table) {
+        Schema::create('buaan', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger ('user_id');
             $table->string('meal_type', 20);
@@ -22,15 +22,15 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });   
 
-        Schema::create('dinhduong_doan', function (Blueprint $table) {
+        Schema::create('ctbuaan', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger ('dinhduong_id');
+            $table->unsignedBigInteger ('buaan_id');
             $table->unsignedBigInteger ('doan_id');
             $table->decimal('quantity', 8, 2);
             $table->date('date');
             $table->timestamps();
 
-            $table->foreign('dinhduong_id')->references('id')->on('dinhduong')->onDelete('cascade');
+            $table->foreign('buaan_id')->references('id')->on('buaan')->onDelete('cascade');
             $table->foreign('doan_id')->references('id')->on('doan')->onDelete('cascade');
         });     
     }
@@ -40,7 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dinhduong_doan');
-        Schema::dropIfExists('dinhduong');
+        Schema::dropIfExists('ctbuaan');
+        Schema::dropIfExists('buaan');
     }
 };

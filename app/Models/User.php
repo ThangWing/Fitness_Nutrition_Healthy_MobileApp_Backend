@@ -33,4 +33,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Login::class, 'login_id');
     }
+
+    public function favoriteExercises()
+    {
+        return $this->belongsToMany(BaiTap::class, 'BaiTapFav', 'user_id', 'baitap_id')->withTimestamps();
+    }
+
+    public function favoriteFoods()
+    {
+        return $this->belongsToMany(Doan::class, 'food_favs', 'user_id', 'doan_id')->withTimestamps();
+    }
+
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Baitap;
 use App\Models\BuoiTap;
 use App\Models\Ctbuoitap;
+use App\Models\DailyChiso;
 
 class CtbuoitapController extends Controller
 {

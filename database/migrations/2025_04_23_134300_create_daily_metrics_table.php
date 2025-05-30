@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger ('user_id');
             $table->date('date');
-            $table->decimal('weight', 5, 2);
-            $table->decimal('height', 5, 2);
-            $table->decimal('bmi', 5, 2);
-            $table->decimal('calories_consumed', 8, 2);
-            $table->decimal('calories_burned', 8, 2);
+            $table->decimal('weight', 5, 2)->nullable();
+            $table->decimal('height', 5, 2)->nullable();
+            $table->decimal('bmi', 5, 2)->nullable();
+            $table->decimal('calories_consumed', 8, 2)->nullable();
+            $table->decimal('calories_burned', 8, 2)->nullable();
             $table->string('note',100)->nullable();
             $table->timestamps();
 

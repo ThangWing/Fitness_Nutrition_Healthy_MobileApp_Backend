@@ -12,6 +12,8 @@ use App\Http\Controllers\DinhDuongController;
 use App\Http\Controllers\DinhDuongDoanController;
 use App\Http\Controllers\DailyChisoController;
 use App\Http\Controllers\MucTieuController;
+use App\Http\Controllers\BaiTapFavController;
+use App\Http\Controllers\FoodFavController;
 
 Route::apiResource('baitap', BaiTapController::class);
 
@@ -55,3 +57,15 @@ Route::apiResource('muctieu', MucTieuController::class);
 Route::post('/send-otp', [LoginController::class, 'sendOtp']);
 Route::post('/verify-otp-reset', [LoginController::class, 'verifyOtpAndReset']);
 Route::post('/change-password', [LoginController::class, 'changePasswordByUserId']);
+
+Route::prefix('fav-exercise')->group(function () {
+    Route::get('{userId}', [FavoriteExerciseController::class, 'index']);
+    Route::post('/', [FavoriteExerciseController::class, 'store']);
+    Route::delete('/', [FavoriteExerciseController::class, 'destroy']);
+});
+
+Route::prefix('fav-food')->group(function () {
+    Route::get('{userId}', [FavoriteFoodController::class, 'index']);
+    Route::post('/', [FavoriteFoodController::class, 'store']);
+    Route::delete('/', [FavoriteFoodController::class, 'destroy']);
+});
