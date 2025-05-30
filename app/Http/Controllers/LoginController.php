@@ -28,15 +28,14 @@ class LoginController extends Controller
         return response()->json($validator->errors(), 422);
     }
 
-    // 1. Tạo user trống
-    $user = User::create([
-    ]);
 
-    // 2. Tạo tài khoản login gắn với user mới
     $login = Login::create([
         'username' => $request->username,
         'password' => Hash::make($request->password),
-        'user_id' => $user->id
+    ]);
+
+    $user = User::create([
+        'login_id' => $login->id,
     ]);
 
     return response()->json([
