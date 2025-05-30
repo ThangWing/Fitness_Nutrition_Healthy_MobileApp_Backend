@@ -26,7 +26,7 @@ class User extends Authenticatable
     }
 
     public function dailyChisos() {
-        return $this->hasMany(Daily_chiso::class);
+        return $this->hasMany(Dailychiso::class);
     }
 
     public function login()

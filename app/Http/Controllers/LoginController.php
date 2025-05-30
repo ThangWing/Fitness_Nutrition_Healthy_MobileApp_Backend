@@ -18,27 +18,34 @@ class LoginController extends Controller
 {
     // Đăng ký tài khoản
     public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:login',
-            'password' => 'required|min:6'
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'username' => 'required|unique:login',
+        'password' => 'required|min:6'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $login = Login::create([
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'user_id' => null // chưa có user
-        ]);
-
-        return response()->json([
-            'message' => 'Tạo tài khoản thành công',
-            'login' => $login
-        ], 201);
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
     }
+
+    // 1. Tạo user trống
+    $user = User::create([
+    ]);
+
+    // 2. Tạo tài khoản login gắn với user mới
+    $login = Login::create([
+        'username' => $request->username,
+        'password' => Hash::make($request->password),
+        'user_id' => $user->id
+    ]);
+
+    return response()->json([
+        'message' => 'Tạo tài khoản thành công',
+        'login' => $login,
+        'user' => $user
+    ], 201);
+}
+
 
     // Đăng nhập
     public function login(Request $request)

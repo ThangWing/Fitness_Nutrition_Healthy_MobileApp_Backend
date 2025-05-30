@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Baitap;
 use App\Models\BuoiTap;
+use App\Models\Ctbuoitap;
 
 class CtbuoitapController extends Controller
 {
@@ -13,7 +14,7 @@ class CtbuoitapController extends Controller
 {
     $request->validate([
         'user_id' => 'required|integer|exists:users,id',
-        'ngaytap' => 'required|date',
+        'date' => 'required|date',
         'exercises' => 'required|array|min:1',
         'exercises.*.baitap_id' => 'required|integer|exists:baitap,id',
         'exercises.*.duration' => 'required|integer|min:1',
@@ -22,14 +23,14 @@ class CtbuoitapController extends Controller
     // 1. Tạo buổi tập mới
     $buoiTap = BuoiTap::create([
         'user_id' => $request->user_id,
-        'ngaytap' => $request->ngaytap,
+        'date' => $request->date,
         // thêm các trường khác nếu có, ví dụ: mục tiêu, mô tả...
     ]);
 
     // 2. Thêm danh sách ctbuoitap
     foreach ($request->exercises as $exercise) {
         Ctbuoitap::create([
-            'buoitap_id' => $buoiTap->id,
+            'buoitapid' => $buoiTap->id,
             'baitap_id' => $exercise['baitap_id'],
             'duration' => $exercise['duration'],
         ]);
