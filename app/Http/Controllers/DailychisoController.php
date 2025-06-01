@@ -57,6 +57,25 @@ class DailyChisoController extends Controller
         return round($weight / pow($height / 100, 2), 2);
     }
 
+    public function checkDailyChiso(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $date = $request->input('date');
+
+        if (!$userId || !$date) {
+            return response()->json(['message' => 'Missing user_id or date'], 400);
+        }
+
+        $dailyChiso = DailyChiso::where('user_id', $userId)
+            ->whereDate('date', $date)
+            ->first();
+
+        if ($dailyChiso) {
+            return response()->json($dailyChiso);
+        } else {
+            return response()->json(['message' => 'No daily chiso found for this user and date'], 404);
+        }
+    }
 
     public function show($id)
     {

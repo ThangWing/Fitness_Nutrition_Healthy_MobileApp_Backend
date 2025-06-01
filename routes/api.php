@@ -50,6 +50,8 @@ Route::prefix('auth')->group(function () {
 Route::apiResource('doan', DoanController::class);
 Route::apiResource('dinhduong', DinhDuongController::class);
 Route::apiResource('dinhduong-doan', DinhDuongDoanController::class);
+Route::get('dailychiso/check', [DailyChisoController::class, 'checkDailyChiso']);
+Route::get('dailychiso/{user_id}/{date}', [DailyChisoController::class, 'showByUserAndDate']);
 Route::apiResource('dailychiso', DailyChisoController::class);
 
 Route::apiResource('muctieu', MucTieuController::class);
@@ -59,13 +61,13 @@ Route::post('/verify-otp-reset', [LoginController::class, 'verifyOtpAndReset']);
 Route::post('/change-password', [LoginController::class, 'changePasswordByUserId']);
 
 Route::prefix('fav-exercise')->group(function () {
-    Route::get('{userId}', [FavoriteExerciseController::class, 'index']);
-    Route::post('/', [FavoriteExerciseController::class, 'store']);
-    Route::delete('/', [FavoriteExerciseController::class, 'destroy']);
+    Route::get('{userId}', [BaiTapFavController::class, 'index']);
+    Route::post('/', [BaiTapFavController::class, 'store']);
+    Route::delete('/', [BaiTapFavController::class, 'destroy']);
 });
 
 Route::prefix('fav-food')->group(function () {
-    Route::get('{userId}', [FavoriteFoodController::class, 'index']);
-    Route::post('/', [FavoriteFoodController::class, 'store']);
-    Route::delete('/', [FavoriteFoodController::class, 'destroy']);
+    Route::get('{userId}', [FoodFavController::class, 'index']);
+    Route::post('/', [FoodFavController::class, 'store']);
+    Route::delete('/', [FoodFavController::class, 'destroy']);
 });
