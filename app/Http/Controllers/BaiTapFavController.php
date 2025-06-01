@@ -76,7 +76,7 @@ class BaiTapFavController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function removeFavExercise(Request $request)
+    public function destroy(Request $request)
     {
         DB::table('BaiTapFav')
             ->where('user_id', $request->user_id)
