@@ -50,7 +50,11 @@ Route::prefix('auth')->group(function () {
 Route::apiResource('doan', DoanController::class);
 Route::apiResource('dinhduong', DinhDuongController::class);
 Route::apiResource('dinhduong-doan', DinhDuongDoanController::class);
+Route::get('dailychiso/check', [DailyChisoController::class, 'checkDailyChiso']);
+Route::get('dailychiso/{user_id}/{date}', [DailyChisoController::class, 'showByUserAndDate']);
 Route::apiResource('dailychiso', DailyChisoController::class);
+// Lấy dailychiso theo user_id và date
+
 
 Route::apiResource('muctieu', MucTieuController::class);
 

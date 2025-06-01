@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User; // <--- BỔ SUNG
+use App\Models\Login; // <--- BỔ SUNG
+use Illuminate\Support\Facades\Validator; // <--- BỔ SUNG
 
 class UserController extends Controller
 {
-    //
     public function index() {
         return User::all();
     }
@@ -17,21 +20,29 @@ class UserController extends Controller
     }
     
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+{
+    $user = User::findOrFail($id);
 
-        $data = $request->only([
-            'name',
-            'email',
-            'age',
-            'gender',
-            'address',
-        ]);
-
-        $user->update($data);
-
-        return response()->json(['message' => 'Cập nhật thành công', 'user' => $user]);
+    // Lấy các trường cho phép update
+    $fields = ['name', 'email', 'age', 'gender', 'address'];
+    $updateData = [];
+    foreach ($fields as $field) {
+        // Chỉ thêm vào updateData nếu field có trong request
+        if ($request->has($field)) {
+            $updateData[$field] = $request->$field;
+        }
     }
+
+    // Nếu không có trường nào để update thì trả về lỗi
+    if (empty($updateData)) {
+        return response()->json(['message' => 'Không có dữ liệu cập nhật'], 400);
+    }
+
+    $user->update($updateData);
+
+    return response()->json(['message' => 'Cập nhật thành công', 'user' => $user]);
+}
+
 
     public function destroy($id) {
         User::destroy($id);
@@ -57,7 +68,8 @@ class UserController extends Controller
             'name' => $request->name,
             'age' => $request->age,
             'gender' => $request->gender,
-            'email' => $request->email
+            'email' => $request->email,
+            'login_id' => $request->login_id
         ]);
 
         // Gán user_id vào login

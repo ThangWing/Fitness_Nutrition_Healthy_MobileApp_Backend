@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\DailyChiso;
+
 
 class DailyChisoController extends Controller
 {
@@ -27,6 +29,26 @@ class DailyChisoController extends Controller
         $data['bmi'] = $this->calculateBMI($data['weight'], $data['height']);
 
         return DailyChiso::create($data);
+    }
+
+    public function checkDailyChiso(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $date = $request->input('date');
+
+        if (!$userId || !$date) {
+            return response()->json(['message' => 'Missing user_id or date'], 400);
+        }
+
+        $dailyChiso = DailyChiso::where('user_id', $userId)
+            ->whereDate('date', $date)
+            ->first();
+
+        if ($dailyChiso) {
+            return response()->json($dailyChiso);
+        } else {
+            return response()->json(['message' => 'No daily chiso found for this user and date'], 404);
+        }
     }
 
     public function update(Request $request, $id)
