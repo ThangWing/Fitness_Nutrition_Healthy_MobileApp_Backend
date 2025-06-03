@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('buaan', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger ('user_id');
-            $table->string('meal_type', 20);
-            $table->decimal('calories', 8, 2);
+            $table->decimal('calories', 8, 2)->nullable();
             $table->date('date');
             $table->timestamps();
 
@@ -27,7 +26,6 @@ return new class extends Migration
             $table->unsignedBigInteger ('buaan_id');
             $table->unsignedBigInteger ('doan_id');
             $table->decimal('quantity', 8, 2);
-            $table->date('date');
             $table->timestamps();
 
             $table->foreign('buaan_id')->references('id')->on('buaan')->onDelete('cascade');

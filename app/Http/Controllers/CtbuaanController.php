@@ -4,29 +4,40 @@ namespace App\Http\Controllers;
 use App\Models\Dinhduongdoan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Buaan;
 
 class DinhDuongDoanController extends Controller
 {
 
-    public function index($buaan_id)
-    {
-        $details = Ctbuaan::with('doan')->where('buaan_id', $buaan_id)->get();
-        return response()->json($details);
-    }
-
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'dinhduong_id' => 'required|exists:dinhduong,id',
-            'doan_id' => 'required|exists:doan,id',
-            'quantity' => 'required|numeric|min:0',
-            'date' => 'required|date',
-        ]);
+{
+    $request->validate([
+        'buaan_id' => 'required|integer|exists:buaan,id',
+        'foods' => 'required|array|min:1',
+        'foods.*.doan_id' => 'required|integer|exists:doan,id',
+        'foods.*.quantity' => 'required|numeric|min:1',
+    ]);
 
-        $record = Ctbuaan::create($data);
-        $ct->buaan->recalculateCalories();
-        return response()->json($record->load('dinhduong', 'doan'));
+    foreach ($request->foods as $food) {
+        Ctbuaan::create([
+            'buaan_id' => $request->buaan_id,
+            'doan_id' => $food['doan_id'],
+            'quantity' => $food['quantity'],
+            'date' => now()->toDateString(), // hoặc lấy từ request nếu cần
+        ]);
     }
+
+    // Gọi lại recalculation từ model Buaan
+    $buaan = Buaan::find($request->buaan_id);
+    if ($buaan) {
+        $buaan->recalculateCalories();
+    }
+
+    return response()->json([
+        'message' => 'Thêm món ăn vào bữa ăn thành công',
+        'buaan_id' => $request->buaan_id
+    ], 201);
+}
 
     public function update(Request $request, $id)
     {
