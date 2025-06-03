@@ -8,8 +8,8 @@ use App\Http\Controllers\BuoitapController;
 use App\Http\Controllers\CTBuoiTapController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DoanController;
-use App\Http\Controllers\DinhDuongController;
-use App\Http\Controllers\DinhDuongDoanController;
+use App\Http\Controllers\BuaanController;
+use App\Http\Controllers\CtbuaanController;
 use App\Http\Controllers\DailyChisoController;
 use App\Http\Controllers\MucTieuController;
 use App\Http\Controllers\BaiTapFavController;
@@ -48,8 +48,21 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::apiResource('doan', DoanController::class);
-Route::apiResource('dinhduong', DinhDuongController::class);
-Route::apiResource('dinhduong-doan', DinhDuongDoanController::class);
+
+Route::prefix('buaan')->group(function () {
+    Route::get('/', [BuaanController::class, 'index']);
+    Route::get('/{id}', [BuaanController::class, 'show']);
+    Route::post('/', [BuaanController::class, 'store']);
+    Route::put('/{id}', [BuaanController::class, 'update']);
+    Route::delete('/{id}', [BuaanController::class, 'destroy']);
+});
+
+Route::prefix('ctbuaan')->group(function () {
+    Route::get('/{buaan_id}', [CtbuaanController::class, 'index']);
+    Route::post('/', [CtbuaanController::class, 'store']);
+    Route::put('/{id}', [CtbuaanController::class, 'update']);
+    Route::delete('/{id}', [CtbuaanController::class, 'destroy']);
+});
 Route::get('dailychiso/check', [DailyChisoController::class, 'checkDailyChiso']);
 Route::get('dailychiso/{user_id}/{date}', [DailyChisoController::class, 'showByUserAndDate']);
 Route::apiResource('dailychiso', DailyChisoController::class);

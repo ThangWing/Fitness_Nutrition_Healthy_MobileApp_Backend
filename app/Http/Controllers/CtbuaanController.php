@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class DinhDuongDoanController extends Controller
 {
+
+    public function index($buaan_id)
+    {
+        $details = Ctbuaan::with('doan')->where('buaan_id', $buaan_id)->get();
+        return response()->json($details);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -16,27 +23,34 @@ class DinhDuongDoanController extends Controller
             'date' => 'required|date',
         ]);
 
-        $record = DinhDuongDoan::create($data);
+        $record = Ctbuaan::create($data);
+        $ct->buaan->recalculateCalories();
         return response()->json($record->load('dinhduong', 'doan'));
     }
 
     public function update(Request $request, $id)
     {
-        $record = DinhDuongDoan::findOrFail($id);
+        $record = Ctbuaan::findOrFail($id);
         $data = $request->validate([
             'quantity' => 'sometimes|numeric|min:0',
-            'date' => 'sometimes|date',
         ]);
 
-        $record->update($data);
-        return response()->json($record->load('dinhduong', 'doan'));
+        $ct->update($data);
+        $ct->buaan->recalculateCalories();
+        
+        return response()->json($ct);
     }
 
     public function destroy($id)
     {
-        $record = DinhDuongDoan::findOrFail($id);
-        $record->delete();
-        return response()->json(['message' => 'Deleted successfully']);
+        $ct = Ctbuaan::findOrFail($id);
+        $buaan = $ct->buaan;
+
+        $ct->delete();
+
+        $buaan->recalculateCalories();
+
+        return response()->json(['message' => 'Deleted']);
     }
 }
 

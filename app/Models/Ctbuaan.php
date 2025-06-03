@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DinhDuongDoan extends Model
 {
-    protected $table = 'dinhduong_doan';
-    protected $fillable = ['dinhduong_id', 'doan_id', 'quantity', 'date'];
+    protected $table = 'ctbuaan';
+    protected $fillable = ['buaan_id', 'doan_id', 'quantity', 'date'];
 
     protected static function booted()
     {
@@ -52,9 +52,9 @@ class DinhDuongDoan extends Model
     }
 
 
-    public function dinhduong()
+    public function buaan()
     {
-        return $this->belongsTo(DinhDuong::class, 'dinhduong_id');
+        return $this->belongsTo(DinhDuong::class, 'buaan_id');
     }
 
     public function doan()
