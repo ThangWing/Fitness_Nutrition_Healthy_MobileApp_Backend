@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ctbuaan extends Model
 {
     protected $table = 'ctbuaan';
-    protected $fillable = ['buaan_id', 'doan_id', 'quantity', 'date'];
+    protected $fillable = ['buaan_id', 'doan_id', 'quantity'];
 
     protected static function booted()
     {

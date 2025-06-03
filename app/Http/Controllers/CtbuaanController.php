@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Dinhduongdoan;
+use App\Models\Ctbuaan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Buaan;
