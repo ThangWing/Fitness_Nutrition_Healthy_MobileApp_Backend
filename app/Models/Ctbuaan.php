@@ -9,20 +9,9 @@ class Ctbuaan extends Model
     protected $table = 'ctbuaan';
     protected $fillable = ['buaan_id', 'doan_id', 'quantity'];
 
-    protected static function booted()
-    {
-        static::saved(function ($model) {
-            $model->recalculateCalories();
-        });
-
-        static::deleted(function ($model) {
-            $model->recalculateCalories();
-        });
-    }
-
     public function buaan()
     {
-        return $this->belongsTo(DinhDuong::class, 'buaan_id');
+        return $this->belongsTo(Buaan::class, 'buaan_id');
     }
 
     public function doan()

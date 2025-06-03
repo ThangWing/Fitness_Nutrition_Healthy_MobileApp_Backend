@@ -11,9 +11,8 @@ class Buaan extends Model
 
     public function doans()
     {
-        return $this->belongsToMany(Doan::class, 'ctbuaan')
-                    ->withPivot('quantity', 'date')
-                    ->withTimestamps();
+        return $this->belongsToMany(Doan::class, 'ctbuaan','buaan_id', 'doan_id')
+                    ->withPivot('quantity');
     }
 
     public function recalculateCalories()
@@ -40,9 +39,8 @@ class Buaan extends Model
     );
 
     // Cập nhật calories_consumed cho ngày đó
-    $dailyChiso->calories_consumed = round(
-        $this->where('user_id', $this->user_id)->where('date', $this->date)->sum('calories'),2
-    );
+
+    $dailyChiso->calories_consumed = round($dailyChiso->calories_consumed + $totalCalories, 2);
 
     $dailyChiso->save();
 }
