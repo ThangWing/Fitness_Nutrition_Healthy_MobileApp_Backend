@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Buaan;
 use App\Models\DailyChiso;
 
-class DinhDuongDoanController extends Controller
+class CtbuaanController extends Controller
 {
 
     public function store(Request $request)
