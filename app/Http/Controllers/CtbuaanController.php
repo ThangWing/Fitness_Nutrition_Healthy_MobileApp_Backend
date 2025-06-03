@@ -5,6 +5,7 @@ use App\Models\Dinhduongdoan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Buaan;
+use App\Models\DailyChiso;
 
 class DinhDuongDoanController extends Controller
 {
