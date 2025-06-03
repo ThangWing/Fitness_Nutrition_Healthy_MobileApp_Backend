@@ -68,6 +68,11 @@ class FoodFavController extends Controller
      */
     public function destroy(FoodFav $foodFav)
     {
-        //
+        DB::table('food_favs')
+            ->where('user_id', $foodFav->user_id)
+            ->where('doan_id', $foodFav->doan_id)
+            ->delete();
+
+        return response()->json(['message' => 'Đã xóa bài tập khỏi mục yêu thích.']);
     }
 }

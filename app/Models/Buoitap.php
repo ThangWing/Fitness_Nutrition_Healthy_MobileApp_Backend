@@ -47,8 +47,6 @@ class BuoiTap extends Model
             ['calories_consumed' => 0, 'calories_burned' => 0]
         );
 
-        
-
         $dailyChiso->calories_burned = round($dailyChiso->calories_burned + $totalCalories, 2);
         $dailyChiso->save();
     }

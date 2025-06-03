@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User; // <--- BỔ SUNG
-use App\Models\Login; // <--- BỔ SUNG
-use Illuminate\Support\Facades\Validator; // <--- BỔ SUNG
+use App\Models\User;
+use App\Models\Login; 
+use Illuminate\Support\Facades\Validator; 
 
 class UserController extends Controller
 {
@@ -43,11 +43,17 @@ class UserController extends Controller
     return response()->json(['message' => 'Cập nhật thành công', 'user' => $user]);
 }
 
-
-    public function destroy($id) {
-        User::destroy($id);
-        return response()->json(['message' => 'User deleted']);
-    }
+    public function destroy($id)
+{
+    $user = User::findOrFail($id);
+    \DB::transaction(function() use ($user) {
+        if ($user->login) {
+            $user->login->delete();
+        }
+        $user->delete();
+    });
+    return response()->json(['message' => 'User deleted successfully']);
+}
 
     public function store(Request $request)
     {
