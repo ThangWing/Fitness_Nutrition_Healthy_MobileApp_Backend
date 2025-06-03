@@ -12,26 +12,31 @@ class DinhDuongDoanController extends Controller
     public function store(Request $request)
 {
     $request->validate([
+        'user_id' => 'required|integer|exists:users,id',
         'buaan_id' => 'required|integer|exists:buaan,id',
+        'date' => 'required|date',
         'foods' => 'required|array|min:1',
         'foods.*.doan_id' => 'required|integer|exists:doan,id',
         'foods.*.quantity' => 'required|numeric|min:1',
     ]);
 
+    $buaan = Buaan::create([
+        'user_id' => $request->user_id,
+        'date' => $request->date,
+        // thêm các trường khác nếu có, ví dụ: mục tiêu, mô tả...
+    ]);
+
     foreach ($request->foods as $food) {
         Ctbuaan::create([
-            'buaan_id' => $request->buaan_id,
+            'buaan_id' => $request->id,
             'doan_id' => $food['doan_id'],
             'quantity' => $food['quantity'],
-            'date' => now()->toDateString(), // hoặc lấy từ request nếu cần
         ]);
     }
 
     // Gọi lại recalculation từ model Buaan
-    $buaan = Buaan::find($request->buaan_id);
-    if ($buaan) {
-        $buaan->recalculateCalories();
-    }
+    $buaan->recalculateCalories();
+    
 
     return response()->json([
         'message' => 'Thêm món ăn vào bữa ăn thành công',
