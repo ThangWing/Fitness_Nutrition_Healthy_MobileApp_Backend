@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
         BaiTapSeeder::class,
+        DoanSeeder::class,
     ]);
     }
 }

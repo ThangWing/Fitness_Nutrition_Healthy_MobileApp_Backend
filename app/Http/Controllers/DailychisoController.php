@@ -11,7 +11,7 @@ class DailyChisoController extends Controller
 {
     public function index()
     {
-        return DailyChiso::with('user')->get();
+        return Dailychiso::with('user')->get();
     }
 
     public function store(Request $request)
@@ -28,7 +28,7 @@ class DailyChisoController extends Controller
 
         $data['bmi'] = $this->calculateBMI($data['weight'], $data['height']);
 
-        return DailyChiso::create($data);
+        return Dailychiso::create($data);
     }
 
     public function update(Request $request, $id)
@@ -92,12 +92,12 @@ class DailyChisoController extends Controller
 
     public function show($id)
     {
-        return DailyChiso::with('user')->findOrFail($id);
+        return Dailychiso::with('user')->findOrFail($id);
     }
 
     public function destroy($id)
     {
-        $daily = DailyChiso::findOrFail($id);
+        $daily = Dailychiso::findOrFail($id);
         $daily->delete();
         return response()->json(['message' => 'Deleted successfully']);
     }
