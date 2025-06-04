@@ -67,6 +67,8 @@ class LoginController extends Controller
         ]);
     }
 
+    
+
     public function sendOtp(Request $request)
     {
         $request->validate(['username' => 'required']);

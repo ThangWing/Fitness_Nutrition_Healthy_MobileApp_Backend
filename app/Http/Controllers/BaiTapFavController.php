@@ -73,6 +73,17 @@ class BaiTapFavController extends Controller
         //
     }
 
+    public function isFavorite(Request $request)
+{
+    $exists = DB::table('baitapfav')
+        ->where('user_id', $request->user_id)
+        ->where('baitap_id', $request->baitap_id)
+        ->exists();
+
+    return response()->json(['is_favorite' => $exists]);
+}
+
+
     /**
      * Remove the specified resource from storage.
      */

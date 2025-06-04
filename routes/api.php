@@ -34,6 +34,10 @@ Route::prefix('ctbuoitap')->group(function () {
     Route::get('/list/{buoitapid}', [CTBuoiTapController::class, 'list']);
 });
 
+
+
+
+
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index']);       // Danh sách user
     Route::get('/{id}', [UserController::class, 'show']);    // Chi tiết 1 user
@@ -67,6 +71,7 @@ Route::prefix('fav-exercise')->group(function () {
     Route::get('{userId}', [BaiTapFavController::class, 'index']);
     Route::post('/', [BaiTapFavController::class, 'store']);
     Route::delete('/', [BaiTapFavController::class, 'destroy']);
+    Route::post('/check', [BaiTapFavController::class, 'isFavorite']);
 });
 
 Route::prefix('fav-food')->group(function () {
