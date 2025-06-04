@@ -10,7 +10,12 @@ class BuaanController extends Controller
 {
     public function index()
     {
-        return response()->json(Buaan::with('doans')->get());
+        $userId = $request->query('user_id');
+        if (!$userId) {
+            return response()->json(['error' => 'Missing user_id'], 400);
+        }
+        $list = BuoiTap::with(['doans'])->where('user_id', $userId)->get();
+        return response()->json($list, 200);
     }
 
     public function show($id)
