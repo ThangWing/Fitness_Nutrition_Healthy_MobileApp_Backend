@@ -90,6 +90,13 @@ Route::prefix('fav-exercise')->group(function () {
     Route::post('/check', [BaiTapFavController::class, 'isFavorite']);
 });
 
+// Cho buoitap (tính calories_burned)
+Route::get('buoitap/total-calories', [BuoiTapController::class, 'getTotalCalories']);
+
+// Cho buaan (tính calories)
+Route::get('buaan/total-calories', [BuaanController::class, 'getTotalCalories']);
+
+
 Route::prefix('fav-food')->group(function () {
     Route::get('{userId}', [FoodFavController::class, 'index']);
     Route::post('/', [FoodFavController::class, 'store']);

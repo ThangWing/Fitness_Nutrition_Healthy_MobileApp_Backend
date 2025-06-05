@@ -37,6 +37,20 @@ class BuoitapController extends Controller
         $bt->delete();
         return response()->json(['message' => 'Deleted successfully']);
     }
+public function getTotalCalories(Request $request)
+{
+    $userId = $request->query('user_id');
+    $date = $request->query('date');
+
+    // Ví dụ, join với bảng user hoặc bảng liên quan ngày tháng nếu có
+    $total = \DB::table('buoitap')
+        ->where('user_id', $userId)
+        ->whereDate('date', $date)
+        ->sum('calories_burned'); // hoặc tên cột của bạn
+
+    return response()->json(['total_calories_burned' => $total]);
+}
+
 
     public function store(Request $request)
     {

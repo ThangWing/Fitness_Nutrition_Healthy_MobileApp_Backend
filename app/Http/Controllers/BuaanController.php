@@ -46,6 +46,21 @@ class BuaanController extends Controller
 }
 
 
+    public function getTotalCalories(Request $request)
+{
+    $userId = $request->query('user_id');
+    $date = $request->query('date');
+
+    $total = \DB::table('buaan')
+        ->where('user_id', $userId)
+        ->whereDate('date', $date)
+        ->sum('calories'); // hoặc tên cột của bạn
+
+    return response()->json(['total_calories' => $total]);
+}
+
+
+
     public function store(Request $request)
     {
         $request->validate([
