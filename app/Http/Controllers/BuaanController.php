@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buaan;
-use App\Models\Doan;
 use Illuminate\Http\Request;
 
 class BuaanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userId = $request->query('user_id');
         if (!$userId) {
             return response()->json(['error' => 'Missing user_id'], 400);
         }
-        $list = BuoiTap::with(['doans'])->where('user_id', $userId)->get();
+        // Đúng là Buaan, không phải BuoiTap
+        $list = Buaan::with(['doans'])->where('user_id', $userId)->get();
         return response()->json($list, 200);
     }
 
@@ -39,6 +39,13 @@ class BuaanController extends Controller
         return response()->json(['message' => 'Deleted successfully']);
     }
 
+    public function getByUser($user_id)
+{
+    $list = Buaan::with(['doans'])->where('user_id', $user_id)->get();
+    return response()->json($list, 200);
+}
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -53,7 +60,7 @@ class BuaanController extends Controller
         $buaan = Buaan::create([
             'user_id' => $request->user_id,
             'meal_type' => $request->meal_type,
-            'calories' => 0, // sẽ tính sau
+            'calories' => 0,
             'date' => $request->date,
         ]);
 
@@ -64,7 +71,7 @@ class BuaanController extends Controller
             ]);
         }
 
-        // Tính lại calories
+        // Cần method này trong model Buaan để tính lại calories
         $buaan->recalculateCalories();
 
         return response()->json([

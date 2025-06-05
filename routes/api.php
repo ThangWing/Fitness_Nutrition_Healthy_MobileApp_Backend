@@ -60,6 +60,8 @@ Route::prefix('buaan')->group(function () {
     Route::put('/{id}', [BuaanController::class, 'update']);
     Route::delete('/{id}', [BuaanController::class, 'destroy']);
 });
+// Route để lấy danh sách bữa ăn theo user_id (API cho app Android)
+Route::get('buaan/user/{userId}', [BuaanController::class, 'getByUser']);
 
 Route::prefix('ctbuaan')->group(function () {
     Route::get('/{buaan_id}', [CtbuaanController::class, 'index']);
