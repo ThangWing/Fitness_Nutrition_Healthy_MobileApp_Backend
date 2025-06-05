@@ -35,9 +35,29 @@ class FoodFavController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+{
+    $userId = $request->input('user_id');
+    $doanId = $request->input('doan_id');
+
+    // Check if favorite already exists (tránh trùng)
+    $exists = DB::table('food_favs')
+        ->where('user_id', $userId)
+        ->where('doan_id', $doanId)
+        ->exists();
+
+    if (!$exists) {
+        DB::table('food_favs')->insert([
+            'user_id' => $userId,
+            'doan_id' => $doanId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return response()->json(['message' => 'Đã thêm vào mục yêu thích!'], 201);
+    } else {
+        return response()->json(['message' => 'Đã tồn tại trong mục yêu thích!'], 200);
     }
+}
+
 
     /**
      * Display the specified resource.
